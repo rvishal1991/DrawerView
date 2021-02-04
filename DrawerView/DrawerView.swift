@@ -1361,7 +1361,15 @@ private struct ChildScrollViewInfo {
 extension DrawerView: UIGestureRecognizerDelegate {
 
     override public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if gestureRecognizer === panGestureRecognizer || gestureRecognizer === overlayTapRecognizer {
+        if gestureRecognizer == panGestureRecognizer{
+            // Ensure it's a vertical drag only
+            let velocity = panGestureRecognizer.velocity(in: panGestureRecognizer.view)
+            if abs(velocity.y) > abs(velocity.x) {
+                return enabled
+            }else{
+                return false
+            }
+        }else if gestureRecognizer === overlayTapRecognizer {
             return enabled
         }
         return true
